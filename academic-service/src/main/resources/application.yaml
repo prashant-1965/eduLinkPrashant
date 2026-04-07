@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: academic-service
+  config:
+    import: {SPRING_CONFIG_IMPORT}

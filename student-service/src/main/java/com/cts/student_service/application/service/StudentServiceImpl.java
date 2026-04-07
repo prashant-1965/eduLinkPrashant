@@ -1,0 +1,46 @@
+package com.cts.student_service.application.service;
+
+import com.cts.dto.request.StudentRegistrationDto;
+import com.cts.student_service.application.entity.Student;
+import com.cts.classexception.StudentException;
+import com.cts.student_service.application.feign.AppUserFeign;
+import com.cts.student_service.application.repository.StudentRepository;
+import com.cts.student_service.application.util.DtoMapper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Slf4j
+@Service
+@AllArgsConstructor
+public class StudentServiceImpl implements IStudentService{
+
+    private final StudentRepository studentRepository;
+    private final AppUserFeign appUserFeign;
+
+    @Override
+    @Transactional
+    @Retry(name = "registerStudent", fallbackMethod = "registerFallback")
+    @CircuitBreaker(name = "registerStudent", fallbackMethod = "registerFallback")
+    public String registerStudent(StudentRegistrationDto studentRegistrationDto) throws StudentException {
+        log.info("Initiating student registration for user: {}", studentRegistrationDto.getUserEmail());
+        log.debug("Extracting student and user entities from DTO");
+        Student student = DtoMapper.studentDtoSeparator(studentRegistrationDto);
+        ResponseEntity<Long> appUserId = appUserFeign.appUserRegistration(studentRegistrationDto);
+        student.setAppUserId(appUserId.getBody());
+        log.error("Attempting to register AppUser and save Student entity");
+        studentRepository.save(student);
+        log.info("Successfully registered student. Assigned Student ID: {}", student.getStudentId());
+        return "Thanks for Registration, Your User Id is: "+student.getStudentId();
+    }
+    public String registerFallback(StudentRegistrationDto studentRegistrationDto, Throwable t) {
+        log.error("Fallback triggered for user: {}. Reason: {}",
+                studentRegistrationDto.getUserEmail(), t.getMessage());
+        return "Registration service is currently experiencing high traffic. " +
+                "Please try again in a few moments. Error: " + t.getLocalizedMessage();
+    }
+}
