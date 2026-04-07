@@ -4,4 +4,5 @@ import com.cts.dto.request.StudentRegistrationDto;
 
 public interface IStudentService {
     String registerStudent(StudentRegistrationDto studentRegistrationDto);
+    void checkStudentExistByStudentId(Long studentId);
 }

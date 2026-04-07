@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/appUser")
@@ -19,9 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserController {
 
     private final IAppUserService appUserService;
+
     @PostMapping("/register")
     public ResponseEntity<Long> appUserRegistration(@Valid @RequestBody AppUserRegistrationDto appUserRegistrationDto){
         log.info("App user registration request has been initiated successFully by {}",appUserRegistrationDto.getUserName());
         return ResponseEntity.status(200).body(appUserService.appUserRegistration(appUserRegistrationDto));
+    }
+
+    @GetMapping("/findAppUserNameByAppUserId/{appUserId}")
+    public String findAppUserNameByAppUserId(@PathVariable Long appUserId){
+        log.info("Request received to find app user name for app user id: {}", appUserId);
+        return appUserService.findAppUserNameByAppUserId(appUserId);
     }
 }

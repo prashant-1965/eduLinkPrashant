@@ -1,6 +1,6 @@
 package com.cts.util;
 
-import java.time.LocalDateTime;
+import com.cts.dto.response.CourseDetailByIdProjection;
 
 public class DtoMapper {
 }

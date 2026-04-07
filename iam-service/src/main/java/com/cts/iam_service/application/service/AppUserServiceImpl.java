@@ -54,6 +54,17 @@ public class AppUserServiceImpl implements IAppUserService{
         log.info("AppUser registration successful for email {}",appUser.getUserEmail());
         return appUser.getId();
     }
+
+    @Override
+    public String findAppUserNameByAppUserId(Long appUserId) throws AppUserException {
+        Optional<AppUser> appUser = appUserRepository.findById(appUserId);
+        if(appUser.isEmpty()){
+            log.error("AppUser not found for ID: {}", appUserId);
+            throw new AppUserException("AppUser not found for ID: " + appUserId, HttpStatus.NOT_FOUND);
+        }
+        return appUser.get().getUserName();
+    }
+
     public Long appUserFallback(AppUserRegistrationDto appUserRegistrationDto, Throwable t) throws AppUserException {
         log.error("AppUser Fallback triggered for {}. Reason: {}",
                 appUserRegistrationDto.getUserEmail(), t.getMessage());

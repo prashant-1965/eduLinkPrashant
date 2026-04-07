@@ -18,6 +18,17 @@ import java.util.Map;
 @ControllerAdvice
 @Slf4j
 public class GlobalException {
+
+    @ExceptionHandler(StudentCourseEnrollmentException.class)
+    public ResponseEntity<String> studentCourseEnrollmentExceptionHandler(StudentCourseEnrollmentException sx){
+        return ResponseEntity.status(sx.getHttpStatus()).body(sx.getMessage());
+    }
+
+    @ExceptionHandler(FacultyCourseEnrollmentException.class)
+    public ResponseEntity<String> facultyCourseEnrollmentExceptionHandler(FacultyCourseEnrollmentException fex){
+        return ResponseEntity.status(fex.getHttpStatus()).body(fex.getMessage());
+    }
+
     @ExceptionHandler(CourseException.class)
     public ResponseEntity<String> courseExceptionHandler(CourseException c){
         return ResponseEntity.status(c.getHttpStatus()).body(c.getMessage());

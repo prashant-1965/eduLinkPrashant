@@ -5,4 +5,5 @@ import com.cts.dto.request.StudentRegistrationDto;
 
 public interface IAppUserService {
     Long appUserRegistration(AppUserRegistrationDto appUserRegistrationDto);
+    String findAppUserNameByAppUserId(Long appUserId);
 }

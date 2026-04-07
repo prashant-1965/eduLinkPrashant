@@ -10,6 +10,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,18 @@ public class StudentServiceImpl implements IStudentService{
         log.info("Successfully registered student. Assigned Student ID: {}", student.getStudentId());
         return "Thanks for Registration, Your User Id is: "+student.getStudentId();
     }
+
+    @Override
+    public void checkStudentExistByStudentId(Long studentId) throws StudentException {
+        log.info("Checking existence of student with ID: {}", studentId);
+        boolean exists = studentRepository.existsByStudentId(studentId);
+        if (!exists) {
+            log.error("Enrollment failed: Student ID {} not found", studentId);
+            throw new StudentException("Student with ID " + studentId + " does not exist.", HttpStatus.NOT_FOUND);
+        }
+        log.info("Student with ID {} exists", studentId);
+    }
+
     public String registerFallback(StudentRegistrationDto studentRegistrationDto, Throwable t) {
         log.error("Fallback triggered for user: {}. Reason: {}",
                 studentRegistrationDto.getUserEmail(), t.getMessage());
