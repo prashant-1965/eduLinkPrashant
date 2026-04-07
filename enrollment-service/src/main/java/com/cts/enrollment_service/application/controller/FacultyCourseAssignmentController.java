@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/faculty-course-assignment")
 @Slf4j
 @AllArgsConstructor
+@RequestMapping("/faculty-course-assignment")
 public class FacultyCourseAssignmentController {
 
     private final IFacultyCourseEnrollmentService facultyCourseEnrollmentService;

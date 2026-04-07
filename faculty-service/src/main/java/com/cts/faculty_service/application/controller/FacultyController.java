@@ -6,10 +6,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/faculty")
@@ -22,5 +19,11 @@ public class FacultyController {
     public ResponseEntity<String> registerFaculty(@Valid @RequestBody FacultyRegistrationDto facultyRegistrationDto){
         log.info("{} has initiated the registration as a Faculty",facultyRegistrationDto.getUserEmail());
         return ResponseEntity.status(200).body(facultyService.registerFaculty(facultyRegistrationDto));
+    }
+
+    @GetMapping("/getFacultyByFacultyId/{facultyId}")
+    public void getFacultyByFacultyId(@PathVariable Long facultyId){
+        log.info("Request has been initiated to get Faculty details by facultyId {}",facultyId);
+        facultyService.getFacultyByFacultyId(facultyId);
     }
 }

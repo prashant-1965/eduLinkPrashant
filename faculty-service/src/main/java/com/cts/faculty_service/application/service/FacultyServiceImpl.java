@@ -1,5 +1,6 @@
 package com.cts.faculty_service.application.service;
 
+import com.cts.classexception.FacultyException;
 import com.cts.dto.request.AppUserRegistrationDto;
 import com.cts.dto.request.FacultyRegistrationDto;
 import com.cts.faculty_service.application.entity.Faculty;
@@ -10,6 +11,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,14 @@ public class FacultyServiceImpl implements IFacultyService{
         facultyRepository.save(faculty);
         log.info("Successfully registered faculty. Assigned Faculty ID: {}", faculty.getFacultyId());
         return "Thanks for Registration, Your User Id is: "+faculty.getFacultyId();
+    }
+
+    @Override
+    public void getFacultyByFacultyId(Long facultyId) throws FacultyException {
+        if (facultyRepository.findFacultyById(facultyId).isEmpty()) {
+            log.error("Faculty verification failed for ID: {}", facultyId);
+            throw new FacultyException(facultyId + " is not registered", HttpStatus.BAD_REQUEST);
+        }
     }
 
     public String registerFallback(FacultyRegistrationDto facultyRegistrationDto, Throwable t) {
