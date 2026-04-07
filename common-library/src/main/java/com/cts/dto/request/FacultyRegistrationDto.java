@@ -6,18 +6,15 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
-@Getter
 @Setter
-public class StudentRegistrationDto implements IUserRegistration {
+@Getter
+public class FacultyRegistrationDto implements IUserRegistration {
 
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Username is required")
     private String userName;
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-    @Column(unique = true, nullable = false)
+    @Email(message = "Please provide a valid email address")
     private String userEmail;
 
     @NotNull(message = "Phone number is required")
@@ -26,19 +23,16 @@ public class StudentRegistrationDto implements IUserRegistration {
     @Column(unique = true, nullable = false)
     private Long phoneNumber;
 
-    @NotNull(message = "Date of birth is required")
-    @Past(message = "Birth date must be in the past")
-    @Column(nullable = false)
-    private LocalDate studentDOB;
-
     @NotBlank(message = "Gender is required")
-    @Pattern(regexp = "^(Male|Female|Other|Prefer not to say)$")
-    @Column(nullable = false)
-    private String studentGender;
+    @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other")
+    private String facultyGender;
 
     @NotBlank(message = "Address is required")
-    @Column(nullable = false)
-    private String studentAddress;
+    private String facultyAddress;
+
+    @Min(value = 0, message = "Experience cannot be negative")
+    @Max(value = 60, message = "Experience seems unrealistic")
+    private int facultyYearOfExperience;
 //    @NotBlank(message = "Password is required")
 //    @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
 //    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
