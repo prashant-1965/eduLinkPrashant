@@ -1,8 +1,8 @@
 package com.cts.enrollment_service.application.service;
 
 
-import com.cts.classexception.FacultyCourseEnrollmentException;
 import com.cts.enrollment_service.application.repository.FacultyCourseEnrollmentRepository;
+import com.cts.classexception.FacultyCourseEnrollmentException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
