@@ -55,6 +55,25 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
+    public void checkCourseExistByCourseId(Long courseId) {
+        log.info("Checking existence of course with ID: {}", courseId);
+        boolean exists = courseRepository.existsByCourseId(courseId);
+        if (!exists) {
+            log.warn("Course with ID {} does not exist", courseId);
+            throw new CourseException("Course is not registered with id: " + courseId, HttpStatus.NOT_FOUND);
+        }
+        log.info("Course with ID {} exists", courseId);
+    }
+
+    @Override
+    public String findCourseTitleByCourseId(Long courseId) {
+        this.checkCourseExistByCourseId(courseId);
+        String courseName = courseRepository.findCourseTitleByCourseId(courseId);
+        log.info("Course name for course ID {} is '{}'", courseId, courseName);
+        return courseName;
+    }
+
+    @Override
     @Transactional
     public String updateCourse(Long courseId, CourseRegistrationDto courseRegistrationDto) {
         log.info("Updating course details for Course ID: {}", courseId);

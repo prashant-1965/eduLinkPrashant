@@ -24,10 +24,10 @@ public class FacultyController {
         return ResponseEntity.status(200).body(facultyService.registerFaculty(facultyRegistrationDto));
     }
 
-    @GetMapping("/checkFacultyByFacultyId/{facultyId}")
-    public void checkFacultyByFacultyId(@PathVariable Long facultyId){
+    @GetMapping("/checkFacultyExistByFacultyId/{facultyId}")
+    public void checkFacultyExistByFacultyId(@PathVariable Long facultyId){
         log.info("Request has been initiated to get Faculty details by facultyId {}",facultyId);
-        facultyService.checkFacultyByFacultyId(facultyId);
+        facultyService.checkFacultyExistByFacultyId(facultyId);
     }
 
     @GetMapping("/getFacultyDetailsByFacultyId/{facultyId}")

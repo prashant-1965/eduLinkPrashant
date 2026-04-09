@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface IStudentCourseEnrollmentService {
     void assignCourseToStudent(Long studentId, Long courseId);
+    void checkStudentExistInCourse(Long studentId, Long courseId);
     List<Long> getEnrolledCourseIdsByStudentId(Long studentId);
 }

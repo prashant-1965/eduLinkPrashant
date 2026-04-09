@@ -34,6 +34,17 @@ public class StudentCourseEnrollmentServiceImpl implements IStudentCourseEnrollm
     }
 
     @Override
+    public void checkStudentExistInCourse(Long studentId, Long courseId) {
+        log.info("Received request to check if student with ID {} is enrolled in course with ID {}", studentId, courseId);
+        boolean isEnrolled = studentCourseEnrollmentRepository.isAlreadyEnrolled(studentId, courseId);
+        if (!isEnrolled) {
+            log.warn("Student with ID {} is not enrolled in course with ID {}", studentId, courseId);
+            throw new StudentCourseEnrollmentException("Student is not enrolled in this course.", HttpStatus.NOT_FOUND);
+        }
+        log.info("Successfully verified enrollment of student with ID {} in course with ID {}", studentId, courseId);
+    }
+
+    @Override
     public List<Long> getEnrolledCourseIdsByStudentId(Long studentId) throws StudentCourseEnrollmentException {
         List<Long> enrolledCourseIds = studentCourseEnrollmentRepository.findCourseIdsByStudentId(studentId);
         if(enrolledCourseIds.isEmpty()){

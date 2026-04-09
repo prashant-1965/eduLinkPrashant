@@ -22,6 +22,13 @@ public class StudentCourseAssignmentController {
         log.info("Successfully assigned course with ID {} to student with ID {}", courseId, studentId);
     }
 
+    @GetMapping("/checkEnrollment/{studentId}/{courseId}")
+    public void checkStudentExistInCourse(@PathVariable("studentId") Long studentId, @PathVariable("courseId") Long courseId){
+        log.info("Received request to check if student with ID {} is enrolled in course with ID {}", studentId, courseId);
+        studentCourseEnrollmentService.checkStudentExistInCourse(studentId, courseId);
+        log.info("Successfully verified enrollment of student with ID {} in course with ID {}", studentId, courseId);
+    }
+
     @GetMapping("/findCourseListBystudentId/{studentId}")
     public List<Long> getCoursesListByStudentId(@PathVariable Long studentId) {
         log.info("Received request to get courses assigned to student with ID {}", studentId);

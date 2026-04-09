@@ -13,17 +13,20 @@ import java.util.Optional;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course,Long> {
+
+    @Query("select count(c)>0 from Course c where c.courseId = :courseId")
+    boolean existsByCourseId(@Param("courseId") Long courseId);
+
     @Query(" select new com.cts.dto.response.CourseProjection(c.courseId, c.courseTitle," +
             " c.courseSubject,c.courseGradeLevel,c.courseCredit,c.courseStatus,c.courseRating) from Course c where c.courseStatus='ACTIVE'")
     List<CourseProjection> findAllAvailableCourse();
 
+    @Query("select c.courseTitle from Course c where c.courseId = :courseId")
+    String findCourseTitleByCourseId(@Param("courseId") Long courseId);
+
     @Query("SELECT new com.cts.dto.response.CourseProjection(c.courseId, c.courseTitle," +
             " c.courseSubject,c.courseGradeLevel,c.courseCredit,c.courseStatus,c.courseRating) FROM Course c where c.courseId = :courseId")
     Optional<CourseProjection> findByCourseId(@Param("courseId") Long courseId);
-
-//    @Query("select new com.cts.eduLink.application.projection.CourseSummaryProjection(c.id, c.courseId, c.courseTitle)"+" from Course c"+
-//            " inner join c.studentSet s where s.studentId = :studentId")
-//    List<CourseSummaryProjection> findCourseSummaryListByStudentId(@Param("studentId") Long studentId);
 
     @Query("select c from Course c where c.courseId = :courseId")
     Optional<Course> findCourseById(@Param("courseId") Long courseId);

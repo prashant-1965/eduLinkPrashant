@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IFacultyService {
     String registerFaculty(FacultyRegistrationDto facultyRegistrationDto);
-    void checkFacultyByFacultyId(Long facultyId);
+    void checkFacultyExistByFacultyId(Long facultyId);
     FacultyDetailProjection getFacultyDetailsByFacultyId(Long facultyId);
     String updateFacultyRating(Long facultyId, double newFacultyRating);
     List<CourseProjection> getFacultyCourses(Long facultyId);

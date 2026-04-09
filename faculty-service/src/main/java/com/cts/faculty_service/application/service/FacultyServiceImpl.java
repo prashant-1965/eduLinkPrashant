@@ -82,12 +82,12 @@ public class FacultyServiceImpl implements IFacultyService{
     @Override
     public List<CourseProjection> getFacultyCourses(Long facultyId) {
         log.debug("Fetching courses for faculty: {}", facultyId);
-        this.checkFacultyByFacultyId(facultyId);
+        this.checkFacultyExistByFacultyId(facultyId);
         return courseFeign.getCoursesByFaculty(facultyId).getBody();
     }
 
     @Override
-    public void checkFacultyByFacultyId(Long facultyId) throws FacultyException {
+    public void checkFacultyExistByFacultyId(Long facultyId) throws FacultyException {
         if (facultyRepository.findFacultyById(facultyId).isEmpty()) {
             log.error("Faculty verification failed for ID: {}", facultyId);
             throw new FacultyException(facultyId + " is not registered", HttpStatus.BAD_REQUEST);

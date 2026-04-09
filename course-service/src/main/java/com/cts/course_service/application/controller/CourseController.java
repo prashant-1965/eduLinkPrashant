@@ -30,6 +30,15 @@ public class CourseController {
         return  ResponseEntity.status(200).body(iCourseService.registerCourse(courseRegistrationDto));
     }
 
+    @GetMapping("/checkCourseExistByCourseId/{courseId}")
+    public void checkCourseExistByCourseId(Long courseId){
+        iCourseService.checkCourseExistByCourseId(courseId);
+    }
+
+    @GetMapping("/findCourseTitleByCourseId/{courseId}")
+    public String findCourseTitleByCourseId(Long courseId){
+        return iCourseService.findCourseTitleByCourseId(courseId);
+    }
 
     @GetMapping("/findCourseDetailsById/{courseId}")
     public ResponseEntity<CourseDetailByIdProjection> findCourseById(@Valid @PathVariable Long courseId) {
