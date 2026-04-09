@@ -5,7 +5,7 @@ import com.cts.course_service.application.feign.FacultyFeign;
 import com.cts.course_service.application.feign.StudentFeign;
 import com.cts.dto.response.CourseDetailByIdProjection;
 import com.cts.course_service.application.projection.CourseDetailProjection;
-import com.cts.course_service.application.projection.CourseProjection;
+import com.cts.dto.response.CourseProjection;
 import com.cts.course_service.application.util.DtoMapper;
 import com.cts.course_service.application.entity.Course;
 import com.cts.course_service.application.feign.CourseEnrollmentFeign;

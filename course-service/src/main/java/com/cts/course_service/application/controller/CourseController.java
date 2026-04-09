@@ -1,7 +1,7 @@
 package com.cts.course_service.application.controller;
 
 import com.cts.course_service.application.projection.CourseDetailProjection;
-import com.cts.course_service.application.projection.CourseProjection;
+import com.cts.dto.response.CourseProjection;
 import com.cts.course_service.application.service.ICourseService;
 import com.cts.dto.request.CourseEnrollmentDto;
 import com.cts.dto.request.CourseRegistrationDto;

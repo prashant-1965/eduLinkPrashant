@@ -1,6 +1,7 @@
 package com.cts.faculty_service.application.feign;
 
 import com.cts.dto.request.AppUserRegistrationDto;
+import com.cts.dto.response.AppUserDetailByIdDto;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -16,4 +17,7 @@ public interface AppUserFeign {
 
     @GetMapping("/appUser/findAppUserNameByAppUserId/{appUserId}")
     String findAppUserNameByAppUserId(@PathVariable Long appUserId);
+
+    @GetMapping("/appUser/findAppUserDetailsByAppUserId/{appUserId}")
+    AppUserDetailByIdDto findAppUserDetailsByAppUserId(@PathVariable Long appUserId);
 }

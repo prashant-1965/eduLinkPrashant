@@ -2,7 +2,7 @@ package com.cts.course_service.application.service;
 
 import com.cts.dto.response.CourseDetailByIdProjection;
 import com.cts.course_service.application.projection.CourseDetailProjection;
-import com.cts.course_service.application.projection.CourseProjection;
+import com.cts.dto.response.CourseProjection;
 import com.cts.dto.request.CourseEnrollmentDto;
 import com.cts.dto.request.CourseRegistrationDto;
 

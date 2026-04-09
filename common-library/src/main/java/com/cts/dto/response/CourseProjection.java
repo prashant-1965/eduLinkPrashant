@@ -1,4 +1,4 @@
-package com.cts.course_service.application.projection;
+package com.cts.dto.response;
 
 
 import lombok.AllArgsConstructor;
