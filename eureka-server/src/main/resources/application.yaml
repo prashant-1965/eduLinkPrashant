@@ -3,7 +3,11 @@ spring:
     name: eureka-server
 server:
   port: 8761
+
 eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
   client:
-    regiter-with-eureka: false
+    register-with-eureka: false
     fetch-registry: false

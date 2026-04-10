@@ -51,7 +51,7 @@ public class ExamServiceImpl implements IExamService {
             log.error("No exams are currently available in the system");
             throw new ExamException("No exams found!", HttpStatus.NOT_FOUND);
         }
-        log.info("Exam list accessed successfully. Total exams found: {}. First exam: {}", examProjections.size(), examProjections.getFirst());
+        log.info("Exam list accessed successfully. Total exams found: {}. First exam: {}", examProjections.size(), examProjections.getFirst().getExamName());
         return examProjections;
     }
 }

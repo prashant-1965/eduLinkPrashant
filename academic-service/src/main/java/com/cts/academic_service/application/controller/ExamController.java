@@ -22,7 +22,7 @@ public class ExamController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createExam(@Valid @RequestBody ExamCreationRequestDto request) {
-        log.info("Creating a new exam: {}", request.getExamName());
+        log.info("Received request to create exam: {}", request.getExamName());
         return ResponseEntity.status(200).body(examService.createExam(request));
     }
 
@@ -35,7 +35,7 @@ public class ExamController {
     @GetMapping("/allExams")
     public ResponseEntity<List<ExamProjection>> getAllExams(){
         log.info("Controller: Request received to fetch all exam projections");
-        return ResponseEntity.ok(examService.findAllExams());
+        return ResponseEntity.status(200).body(examService.findAllExams());
     }
 
 }
