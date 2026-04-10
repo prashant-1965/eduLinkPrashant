@@ -21,7 +21,7 @@ public class FeedBackController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerFeedback(@Valid @RequestBody FeedbackDto feedbackDto) {
-        log.info("Received POST request to register feedback for User ID: {}", feedbackDto.getAppUserId());
+        log.info("Received POST request to register feedback for User ID: {}", feedbackDto.getAppUserRoleId());
         return ResponseEntity.status(200).body(feedbackService.registerFeedback(feedbackDto));
     }
 

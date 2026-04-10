@@ -30,6 +30,12 @@ public class FacultyController {
         facultyService.checkFacultyExistByFacultyId(facultyId);
     }
 
+    @GetMapping("/getFacultyNameByFacultyId/{facultyId}")
+    public String getFacultyNameByFacultyId(@PathVariable Long facultyId){
+        log.info("Request has been initiated to get Faculty name by facultyId {}",facultyId);
+        return facultyService.getFacultyNameByFacultyId(facultyId);
+    }
+
     @GetMapping("/getFacultyDetailsByFacultyId/{facultyId}")
     public FacultyDetailProjection getFacultyDetailsByFacultyId(@PathVariable Long facultyId) {
         log.info("Request has been initiated to get Faculty details by facultyID {}", facultyId);

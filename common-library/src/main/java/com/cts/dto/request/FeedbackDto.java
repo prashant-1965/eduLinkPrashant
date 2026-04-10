@@ -6,10 +6,7 @@ import lombok.Getter;
 @Getter
 public class FeedbackDto {
     @NotNull(message = "User ID is required")
-    private Long appUserId;
-
-    @NotBlank(message = "Reviewer name is required")
-    private String appUserName;
+    private Long appUserRoleId;
 
     @NotBlank(message = "Reviewer type is required")
     @Pattern(regexp = "^(STUDENT|FACULTY)$",

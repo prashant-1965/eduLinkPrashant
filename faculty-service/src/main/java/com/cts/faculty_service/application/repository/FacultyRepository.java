@@ -17,4 +17,7 @@ public interface FacultyRepository extends JpaRepository<Faculty,Long> {
             " from Faculty f where f.facultyId = :facultyId")
     Optional<FacultyDetail> findFacultyDetailProjectionByFacultyId(@Param("facultyId") Long facultyId);
 
+    @Query("select f.appUserId from Faculty f where f.facultyId = :facultyId")
+    Long findAppUserIdByFacultyId(@Param("facultyId") Long facultyId);
+
 }

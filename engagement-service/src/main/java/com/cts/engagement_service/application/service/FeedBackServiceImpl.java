@@ -30,17 +30,21 @@ public class FeedBackServiceImpl implements IFeedBackService {
     @Transactional
     public String registerFeedback(FeedbackDto feedbackDto) throws FeedbackException {
         log.info("Attempting to register feedback for User ID: {} with Reviewer Type: {}",
-                feedbackDto.getAppUserId(), feedbackDto.getReviewerType());
+                feedbackDto.getAppUserRoleId(), feedbackDto.getReviewerType());
+        String appUserName;
         if(feedbackDto.getReviewerType().equalsIgnoreCase("STUDENT")){
-            studentFeign.checkStudentExistByStudentId(feedbackDto.getAppUserId());
+            studentFeign.checkStudentExistByStudentId(feedbackDto.getAppUserRoleId());
+            appUserName = studentFeign.getStudentNameByStudentId(feedbackDto.getAppUserRoleId());
         } else if(feedbackDto.getReviewerType().equalsIgnoreCase("FACULTY")){
-            facultyFeign.checkFacultyExistByFacultyId(feedbackDto.getAppUserId());
+            facultyFeign.checkFacultyExistByFacultyId(feedbackDto.getAppUserRoleId());
+            appUserName = facultyFeign.getFacultyNameByFacultyId(feedbackDto.getAppUserRoleId());
         }else{
             throw new FeedbackException("Invalid feedback type", HttpStatus.BAD_REQUEST);
         }
         FeedBack feedBack = DtoMapper.feedBackDtoSeparator(feedbackDto);
+        feedBack.setAppUserName(appUserName);
         feedBackRepository.save(feedBack);
-        log.info("Feedback successfully saved for User ID: {}", feedbackDto.getAppUserId());
+        log.info("Feedback successfully saved for User ID: {}", feedbackDto.getAppUserRoleId());
         return "Thank you for your feedback!";
     }
 

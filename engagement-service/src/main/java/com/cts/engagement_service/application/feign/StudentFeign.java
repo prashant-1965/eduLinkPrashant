@@ -9,4 +9,7 @@ public interface StudentFeign {
 
     @GetMapping("/student/checkStudentExistByStudentId/{studentId}")
     void checkStudentExistByStudentId(@PathVariable Long studentId);
+
+    @GetMapping("/student/getStudentNameByStudentId/{studentId}")
+    String getStudentNameByStudentId(@PathVariable Long studentId);
 }

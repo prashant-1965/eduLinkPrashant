@@ -50,6 +50,15 @@ public class StudentServiceImpl implements IStudentService{
         log.info("Student with ID {} exists", studentId);
     }
 
+    @Override
+    public String getStudentNameByStudentId(Long studentId) {
+        Long appUserId = studentRepository.findAppUserIdByStudentId(studentId);
+        log.info("Fetching student name for Student ID: {} with App User ID: {}", studentId, appUserId);
+        String studentName = appUserFeign.findAppUserNameByAppUserId(appUserId);
+        log.info("Retrieved student name: {} for Student ID: {}", studentName, studentId);
+        return studentName;
+    }
+
     public String registerFallback(StudentRegistrationDto studentRegistrationDto, Throwable t) {
         log.error("Fallback triggered for user: {}. Reason: {}",
                 studentRegistrationDto.getUserEmail(), t.getMessage());

@@ -8,4 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface FacultyFeign {
     @GetMapping("/faculty/checkFacultyExistByFacultyId/{facultyId}")
     void checkFacultyExistByFacultyId(@PathVariable Long facultyId);
+
+    @GetMapping("/faculty/getFacultyNameByFacultyId/{facultyId}")
+    String getFacultyNameByFacultyId(@PathVariable Long facultyId);
 }
