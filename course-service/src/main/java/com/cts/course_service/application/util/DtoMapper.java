@@ -1,11 +1,18 @@
 package com.cts.course_service.application.util;
 
 import com.cts.course_service.application.entity.Course;
+import com.cts.course_service.application.entity.LearningMaterial;
+import com.cts.dto.request.LearningMaterialRegistrationDto;
 import com.cts.dto.response.CourseProjection;
 import com.cts.dto.request.CourseRegistrationDto;
 import com.cts.dto.response.CourseDetailByIdProjection;
 import com.cts.dto.response.FacultyDetailProjection;
 import com.cts.util.UIDGeneratorUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class DtoMapper {
     public static Course courseDtoSeparator(CourseRegistrationDto courseRegistrationDto){
@@ -41,7 +48,28 @@ public class DtoMapper {
         courseDetailByIdProjection.setFacultyRating(facultyDetailProjection.getFacultyRating());
         courseDetailByIdProjection.setFacultyYearOfExperience(facultyDetailProjection.getFacultyYearOfExperience());
         return courseDetailByIdProjection;
+    }
 
+    public static LearningMaterial learningMaterialDtoSeparator(LearningMaterialRegistrationDto dto) throws IOException {
+        LearningMaterial learningMaterial = new LearningMaterial();
+        learningMaterial.setLearningMaterialTitle(dto.getLearningMaterialTitle());
+
+        MultipartFile file = dto.getLearningMaterialFile();
+        if (file == null || file.isEmpty()) {
+            throw new IOException("File is empty or missing");
+        }
+        // examLocalDateTime is usually set at creation, but you can update it here if needed
+
+        File uploadDir = new File("uploads");
+        if (!uploadDir.exists()) uploadDir.mkdirs();
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        File dest = new File(uploadDir.getAbsolutePath() + File.separator + fileName);
+        file.transferTo(dest);
+        learningMaterial.setLearningMaterialFile(dest.getPath());
+        learningMaterial.setLearningMaterialUploadedDate(LocalDateTime.now());
+        learningMaterial.setLearningMaterialStatus("UPLOADED");
+
+        return learningMaterial;
     }
 
 }

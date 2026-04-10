@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Long> {
 
-    @Query("SELECT new com.cts.eduLink.application.projection.ExamProjection(" +
+    @Query("SELECT new com.cts.dto.response.ExamProjection(" +
             "e.examName, e.examLocalDateTime, e.examStatus, e.candidates) " +
             "FROM Exam e ORDER BY e.examLocalDateTime ASC")
     List<ExamProjection> findAllExams();

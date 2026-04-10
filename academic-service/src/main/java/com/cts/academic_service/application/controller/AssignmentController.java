@@ -5,7 +5,6 @@ import com.cts.academic_service.application.entity.AssignmentStatus;
 import com.cts.academic_service.application.service.IAssignmentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
