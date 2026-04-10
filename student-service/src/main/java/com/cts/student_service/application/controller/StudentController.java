@@ -24,6 +24,7 @@ public class StudentController {
 
     @GetMapping("/checkStudentExistByStudentId/{studentId}")
     public void checkStudentExistByStudentId(@PathVariable Long studentId){
+        log.info("Checking existence of Student ID: {}", studentId);
         iStudentService.checkStudentExistByStudentId(studentId);
     }
 }

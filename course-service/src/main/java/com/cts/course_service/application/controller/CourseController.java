@@ -31,12 +31,12 @@ public class CourseController {
     }
 
     @GetMapping("/checkCourseExistByCourseId/{courseId}")
-    public void checkCourseExistByCourseId(Long courseId){
+    public void checkCourseExistByCourseId(@Valid @PathVariable Long courseId){
         iCourseService.checkCourseExistByCourseId(courseId);
     }
 
     @GetMapping("/findCourseTitleByCourseId/{courseId}")
-    public String findCourseTitleByCourseId(Long courseId){
+    public String findCourseTitleByCourseId(@Valid @PathVariable Long courseId){
         return iCourseService.findCourseTitleByCourseId(courseId);
     }
 

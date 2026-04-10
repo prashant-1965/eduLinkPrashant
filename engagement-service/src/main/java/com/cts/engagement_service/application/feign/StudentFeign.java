@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "student-service")
 public interface StudentFeign {
 
-    @GetMapping("/studnet/checkStudentExistByStudentId/{studentId}")
+    @GetMapping("/student/checkStudentExistByStudentId/{studentId}")
     void checkStudentExistByStudentId(@PathVariable Long studentId);
 }

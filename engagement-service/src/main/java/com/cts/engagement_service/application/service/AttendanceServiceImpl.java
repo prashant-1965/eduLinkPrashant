@@ -34,13 +34,17 @@ public class AttendanceServiceImpl implements IAttendanceService{
     @Override
     @Transactional
     public String registerAttendanceByStudentId(AttendanceRegistrationDto attendanceRegistrationDto) {
+        Long studentId = attendanceRegistrationDto.getStudentId();
+        Long courseId = attendanceRegistrationDto.getCourseId();
+        log.info("Initiating attendance registration process - Student ID: {}, Course ID: {}", studentId, courseId);
+        log.debug("Validating existence of Student ID: {}", studentId);
         studentFeign.checkStudentExistByStudentId(attendanceRegistrationDto.getStudentId());
-        log.info("Attempting to register attendance for Student ID: {} in Course ID: {}", attendanceRegistrationDto.getStudentId(), attendanceRegistrationDto.getCourseId());
+        log.debug("Validating existence of Course ID: {}", courseId);
         courseFeign.checkCourseExistByCourseId(attendanceRegistrationDto.getCourseId());
-        studentCourseEnrollmentFeign.checkStudentExistInCourse(attendanceRegistrationDto.getStudentId(), attendanceRegistrationDto.getCourseId());
+        log.debug("Verifying enrollment for Student ID: {} in Course ID: {}", studentId, courseId);
+        studentCourseEnrollmentFeign.checkStudentExistInCourse(studentId, courseId);
+        log.info("Attempting to register attendance for Student ID: {} in Course ID: {}", studentId, courseId);
         Attendance attendance = DtoMapper.attendanceDtoSeparator(attendanceRegistrationDto);
-        attendance.setStudentId(attendanceRegistrationDto.getStudentId());
-        attendance.setCourseId(attendanceRegistrationDto.getCourseId());
         attendanceRepository.save(attendance);
         log.info("Attendance successfully recorded for Student ID: {} in Course ID: {}", attendanceRegistrationDto.getStudentId(), attendanceRegistrationDto.getCourseId());
         return "Attendance recorded successFully!";
