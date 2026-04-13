@@ -1,5 +1,6 @@
 package com.cts.student_service.application.service;
 
+import com.cts.dto.request.AppUserRegistrationDto;
 import com.cts.dto.request.StudentRegistrationDto;
 import com.cts.student_service.application.entity.Student;
 import com.cts.classexception.StudentException;
@@ -31,7 +32,8 @@ public class StudentServiceImpl implements IStudentService{
         log.info("Initiating student registration for user: {}", studentRegistrationDto.getUserEmail());
         log.debug("Extracting student and user entities from DTO");
         Student student = DtoMapper.studentDtoSeparator(studentRegistrationDto);
-        ResponseEntity<Long> appUserId = appUserFeign.appUserRegistration(studentRegistrationDto);
+        AppUserRegistrationDto appUserDto = AppUserRegistrationDto.from(studentRegistrationDto, "STUDENT");
+        ResponseEntity<Long> appUserId = appUserFeign.appUserRegistration(appUserDto);
         student.setAppUserId(appUserId.getBody());
         log.error("Attempting to register AppUser and save Student entity");
         studentRepository.save(student);

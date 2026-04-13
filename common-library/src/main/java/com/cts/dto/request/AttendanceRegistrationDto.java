@@ -1,9 +1,9 @@
 package com.cts.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class AttendanceRegistrationDto {
     @NotNull(message = "Student ID is required to mark attendance")
     private Long studentId;
