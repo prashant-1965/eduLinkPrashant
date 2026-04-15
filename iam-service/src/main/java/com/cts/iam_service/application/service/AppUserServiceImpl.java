@@ -3,6 +3,7 @@ package com.cts.iam_service.application.service;
 import com.cts.classexception.AppUserException;
 import com.cts.dto.request.AppUserRegistrationDto;
 import com.cts.dto.response.AppUserDetailByIdDto;
+import com.cts.dto.response.UserAuthDto;
 import com.cts.iam_service.application.entity.AppUser;
 import com.cts.iam_service.application.entity.Role;
 import com.cts.iam_service.application.repository.AppUserRepository;
@@ -13,6 +14,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,13 +26,14 @@ import java.util.Optional;
 public class AppUserServiceImpl implements IAppUserService{
     private final AppUserRepository appUserRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     @Retry(name = "appUserRegistration", fallbackMethod = "appUserFallback")
     @CircuitBreaker(name = "appUserRegistration", fallbackMethod = "appUserFallback")
     public Long appUserRegistration(AppUserRegistrationDto appUserRegistrationDto) throws AppUserException {
-        AppUser appUser = DtoMapper.appUserDtoSeparator(appUserRegistrationDto);
+        AppUser appUser = DtoMapper.appUserDtoSeparator(appUserRegistrationDto, passwordEncoder);
         log.info("AppUser registration intercepted ");
         log.debug("AppUserRepo initiated searching user by email");
         Optional<AppUser> appUserOptional = appUserRepository.findAppUserByUserEmail(appUser.getUserEmail());
@@ -74,6 +77,23 @@ public class AppUserServiceImpl implements IAppUserService{
             throw new AppUserException("AppUser not found for ID: " + appUserId, HttpStatus.NOT_FOUND);
         }
         return DtoMapper.appUserToAppUserDetailById(appUser.get());
+    }
+
+    @Override
+    public UserAuthDto findAppUserByEmail(String email) throws AppUserException {
+        Optional<AppUser> appUser = appUserRepository.findAppUserByUserEmail(email);
+        if(appUser.isEmpty()){
+            log.error("AppUser not found for email: {}", email);
+            throw new AppUserException("User not found for email: " + email, HttpStatus.NOT_FOUND);
+        }
+        UserAuthDto userAuthDto = new UserAuthDto();
+        userAuthDto.setId(appUser.get().getId());
+        userAuthDto.setUserName(appUser.get().getUserName());
+        userAuthDto.setUserEmail(appUser.get().getUserEmail());
+        userAuthDto.setUserPassword(appUser.get().getUserPassword());
+        userAuthDto.setRoleName(appUser.get().getRole() != null ? appUser.get().getRole().getRoleName() : null);
+        log.info("Retrieved user details for email: {}", email);
+        return userAuthDto;
     }
 
     public Long appUserFallback(AppUserRegistrationDto appUserRegistrationDto, Throwable t) throws AppUserException {

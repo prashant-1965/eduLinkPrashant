@@ -4,4 +4,5 @@ public interface IUserRegistration {
     String getUserName();
     String getUserEmail();
     Long getPhoneNumber();
+    String getPassword();
 }
