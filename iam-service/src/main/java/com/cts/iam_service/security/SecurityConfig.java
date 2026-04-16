@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/appUser/register").permitAll()
                         .requestMatchers("/appUser/findAppUserByEmail/**").permitAll()
                         .requestMatchers("/appUser/findAppUserNameByAppUserId/**").permitAll()
-                        .requestMatchers("/appUser/findAppUserDetailsByAppUserId/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> {});

@@ -13,6 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -21,6 +22,25 @@ public class JwtAuthenticationFilter implements GlobalFilter {
 
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
+    private static final List<String> PUBLIC_ENDPOINTS = List.of(
+            "/auth/login",
+            "/appUser/register",
+            "/student/register",
+            "/faculty/register",
+            "/faculty/checkFacultyExistByFacultyId/",
+            "/faculty/getFacultyNameByFacultyId/",
+            "/faculty/getFacultyDetailsByFacultyId/",
+            "/faculty/getFacultyCourses",
+            "/course/checkCourseExistByCourseId/",
+            "/course/findCourseTitleByCourseId/",
+            "/course/findAllAvailableCourse",
+            "/course/courseCount/",
+            "/faculty-course-assignment/findCourseListByFacultyId/",
+            "/faculty-course-assignment/findFacultyIdByCourseId/",
+            "/student-course-assignment/findCourseListBystudentId/",
+            "/student-course-assignment/checkEnrollment/",
+            "/feedback/getFeedbackList"
+    );
 
     private Mono<Void> sendUnauthorizedResponse(ServerWebExchange exchange, String errorMessage, String errorCode) {
         log.debug("Sending unauthorized response: {} ({})", errorMessage, errorCode);
@@ -49,10 +69,9 @@ public class JwtAuthenticationFilter implements GlobalFilter {
         String path = exchange.getRequest().getURI().getPath();
         log.info("Processing request for path: {}", path);
 
-        // Skip authentication for login and register endpoints
-        if (path.startsWith("/auth/login") || path.startsWith("/appUser/register") ||
-            path.startsWith("/student/register") || path.startsWith("/faculty/register")) {
-            log.info("Public endpoint detected, skipping authentication for path: {}", path);
+        boolean isPublic = PUBLIC_ENDPOINTS.stream().anyMatch(path::startsWith);
+        if (isPublic) {
+            log.info("Public endpoint detected: {}, skipping authentication.", path);
             return chain.filter(exchange);
         }
 

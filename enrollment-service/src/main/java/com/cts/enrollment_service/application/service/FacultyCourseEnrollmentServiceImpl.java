@@ -83,18 +83,14 @@ public class FacultyCourseEnrollmentServiceImpl implements IFacultyCourseEnrollm
         );
     }
 
-    public void fallbackAssignCourse(Long facultyId, Long courseId, Throwable t) throws CourseException {
-        log.error("Resilience fallback active for assignment. Faculty: {}, Course: {}. Reason: {}",
-                facultyId, courseId, t.getMessage());
-
+    public List<Long> fallbackAssignCourse(Long facultyId, Throwable t) throws CourseException {
+        log.error("Resilience fallback active for getCoursesList. Faculty: {}. Reason: {}",
+                facultyId, t.getMessage());
         if (t instanceof FacultyCourseEnrollmentException) {
             throw (FacultyCourseEnrollmentException) t;
         }
-        if (t instanceof CourseException) {
-            throw (CourseException) t;
-        }
         throw new CourseException(
-                "The enrollment service is currently unavailable or experiencing heavy load. Please try again later.",
+                "The enrollment service is currently unavailable. Please try again later.",
                 HttpStatus.SERVICE_UNAVAILABLE
         );
     }

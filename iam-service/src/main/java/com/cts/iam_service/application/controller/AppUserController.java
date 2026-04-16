@@ -31,8 +31,8 @@ public class AppUserController {
         return appUserService.findAppUserNameByAppUserId(appUserId);
     }
 
-    @GetMapping("/findAppUserDetailsByAppUserId/{appUserId}")
     @PreAuthorize("hasAnyRole('STUDENT', 'FACULTY', 'ADMIN')")
+    @GetMapping("/findAppUserDetailsByAppUserId/{appUserId}")
     public AppUserDetailByIdDto findAppUserDetailsByAppUserId(@PathVariable Long appUserId){
         log.info("Request received to find app user details for app user id: {}", appUserId);
         return appUserService.findAppUserDetailsByAppUserId(appUserId);

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.cts.dto.response.CourseProjection;
 import java.util.List;
@@ -49,6 +50,7 @@ public class FacultyController {
         return ResponseEntity.status(200).body(courses);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{facultyId}")
     public ResponseEntity<String> deleteFaculty(@Valid @PathVariable Long facultyId) {
         log.info("Received request to delete faculty with ID: {}", facultyId);
@@ -56,6 +58,7 @@ public class FacultyController {
         return ResponseEntity.status(200).body(response);
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PatchMapping("/updateRating/{facultyId}/{newFacultyRating}")
     public ResponseEntity<String> updateFacultyRating(@Valid @PathVariable Long facultyId, @PathVariable double newFacultyRating){
         return ResponseEntity.status(200).body(facultyService.updateFacultyRating(facultyId,newFacultyRating));

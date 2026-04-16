@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "faculty-service")
 public interface FacultyFeign {
 
-    @GetMapping("/faculty/checkFacultyByFacultyId/{facultyId}")
+    @GetMapping("/faculty/checkFacultyExistByFacultyId/{facultyId}")
     void checkFacultyByFacultyId(@PathVariable Long facultyId);
 
     @GetMapping("/faculty/getFacultyDetailsByFacultyId/{facultyId}")

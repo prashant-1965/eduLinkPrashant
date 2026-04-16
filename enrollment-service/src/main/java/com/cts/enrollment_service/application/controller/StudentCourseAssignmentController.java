@@ -3,6 +3,7 @@ package com.cts.enrollment_service.application.controller;
 import com.cts.enrollment_service.application.service.IStudentCourseEnrollmentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class StudentCourseAssignmentController {
 
     private final IStudentCourseEnrollmentService studentCourseEnrollmentService;
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/assign/{studentId}/{courseId}")
     public void assignCourseToStudent(@PathVariable("studentId") Long studentId, @PathVariable("courseId") Long courseId){
         log.info("Received request to assign course with ID {} to student with ID {}", courseId, studentId);

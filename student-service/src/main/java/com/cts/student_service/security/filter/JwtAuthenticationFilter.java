@@ -33,6 +33,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (requestPath.startsWith("/actuator/")) {
+            log.debug("Public endpoint detected, skipping authentication for path: {}", requestPath);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String userEmail = request.getHeader("X-User-Email");
         String userRole = request.getHeader("X-User-Role");
 

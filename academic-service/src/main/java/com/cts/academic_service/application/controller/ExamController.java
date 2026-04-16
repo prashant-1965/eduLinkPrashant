@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +21,21 @@ public class ExamController {
 
     private final IExamService examService;
 
+    @PreAuthorize("hasRole('FACULTY')")
     @PostMapping("/register")
     public ResponseEntity<String> createExam(@Valid @RequestBody ExamCreationRequestDto request) {
         log.info("Received request to create exam: {}", request.getExamName());
         return ResponseEntity.status(200).body(examService.createExam(request));
     }
 
+    @PreAuthorize("hasRole('FACULTY')")
     @DeleteMapping("/delete/{examId}")
     public ResponseEntity<String> deleteExam(@Valid @PathVariable Long examId) {
         log.info("Delete operation for examId: {} has been initiated successfully", examId);
         return ResponseEntity.status(200).body(examService.deleteExam(examId));
     }
 
+    @PreAuthorize("hasAnyRole('FACULTY', 'STUDENT')")
     @GetMapping("/allExams")
     public ResponseEntity<List<ExamProjection>> getAllExams(){
         log.info("Controller: Request received to fetch all exam projections");
